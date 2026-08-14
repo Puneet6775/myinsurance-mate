@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { api } from '../api.js'
+import { useRef } from 'react'
 import Button from '../components/Button.jsx'
 import CountUp from '../components/CountUp.jsx'
 import { PlayIcon } from '../components/Icons.jsx'
@@ -9,65 +8,15 @@ import ParallaxImage from '../components/ParallaxImage.jsx'
 import HeroIntro, { HeroItem, HeroVisual } from '../components/HeroIntro.jsx'
 import Reveal, { Stagger, StaggerItem } from '../components/Reveal.jsx'
 import Testimonials from '../components/Testimonials.jsx'
+import { INSIGHTS, SERVICES, TESTIMONIALS } from '../data/content.js'
 import useHeroGsap from '../hooks/useHeroGsap.js'
-
-const fallbackTestimonials = [
-  {
-    name: 'Neha Kulkarni',
-    role: 'Product lead, Pune',
-    quote: 'They refused to sell us a ULIP until the term cover was in place. That honesty is why we moved our parents’ health policy to them as well.',
-    rating: 5,
-    avatar: '/images/avatar-2.jpg',
-  },
-  {
-    name: 'Arjun Malhotra',
-    role: 'Founder, Gurugram',
-    quote: 'Motor renewal used to be a last-day panic. Now a mate sends the comparison a week early, with IDV and garage network spelled out.',
-    rating: 5,
-    avatar: '/images/avatar-1.jpg',
-  },
-]
-
-const fallbackServices = [
-  {
-    slug: 'motor',
-    name: 'Motor Insurance',
-    summary: 'Third-party, own-damage and comprehensive cover for cars, bikes and commercial vehicles.',
-    tags: ['Third-party', 'Comprehensive', 'Own-damage'],
-    cardImage: '/images/motor-car.jpg',
-  },
-  {
-    slug: 'health',
-    name: 'Health Insurance',
-    summary: 'Individual, family floater and super top-up plans with cashless hospital networks.',
-    tags: ['Family floater', 'Cashless', 'Critical illness'],
-    cardImage: '/images/health-hospital.jpg',
-  },
-  {
-    slug: 'life',
-    name: 'Life Insurance',
-    summary: 'Term, ULIP, endowment, child and retirement plans — protection first, then savings.',
-    tags: ['Term cover', 'ULIP', 'Retirement'],
-    cardImage: '/images/life-couple.jpg',
-  },
-]
 
 export default function Home() {
   const heroRef = useRef(null)
   useHeroGsap(heroRef)
-  const [services, setServices] = useState(fallbackServices)
-  const [testimonials, setTestimonials] = useState(fallbackTestimonials)
-  const [insights, setInsights] = useState([
-    { slug: 'how-much-term-cover', title: 'How much term cover does an Indian household actually need?', author: 'Ananya Iyer', read: '4 min read', image: '/images/insight-1.jpg' },
-    { slug: 'family-floater-vs-individual', title: 'Family floater or individual health policies?', author: 'Priya Sharma', read: '3 min read', image: '/images/insight-2.jpg' },
-    { slug: 'zero-dep-worth-it', title: 'Is zero-depreciation motor cover worth the extra premium?', author: 'Rohan Kapoor', read: '3 min read', image: '/images/insight-3.jpg' },
-  ])
-
-  useEffect(() => {
-    api.services().then((d) => d.items?.length && setServices(d.items)).catch(() => {})
-    api.testimonials().then((d) => setTestimonials(d.items || [])).catch(() => {})
-    api.insights().then((d) => setInsights(d.items || [])).catch(() => {})
-  }, [])
+  const services = SERVICES
+  const testimonials = TESTIMONIALS
+  const insights = INSIGHTS
 
   return (
     <>

@@ -1,19 +1,24 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import CORS_ORIGINS
-from .db import db
-from .routes.content import router as content_router
+from .db import close_pool, init_pool
 from .routes.leads import router as leads_router
-from .seed import seed_if_empty
+
+log = logging.getLogger("uvicorn.error")
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    await seed_if_empty(db)
+    try:
+        await init_pool()
+    except Exception:
+        log.exception("MySQL connection failed. Pages still work; forms will return 503.")
     yield
+    await close_pool()
 
 
 app = FastAPI(title="myInsurancemates API", lifespan=lifespan)
@@ -24,10 +29,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(content_router)
 app.include_router(leads_router)
 
 
 @app.get("/api/health")
 async def health():
-    return {"ok": True, "service": "myInsurancemates"}
+    from .db import pool
+
+    return {"ok": True, "service": "myInsurancemates", "mysql": pool is not None}

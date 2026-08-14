@@ -17,12 +17,6 @@ async function request(path, options = {}) {
 }
 
 export const api = {
-  services: () => request('/api/services'),
-  service: (slug) => request(`/api/services/${slug}`),
-  testimonials: () => request('/api/testimonials'),
-  team: () => request('/api/team'),
-  insights: () => request('/api/insights'),
-  faqs: () => request('/api/faqs'),
   contact: (body) => request('/api/contact', { method: 'POST', body: JSON.stringify(body) }),
   quote: (body) => request('/api/quote', { method: 'POST', body: JSON.stringify(body) }),
   newsletter: (email) =>

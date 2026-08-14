@@ -1,20 +1,16 @@
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { api } from '../api.js'
+import { useRef } from 'react'
 import Button from '../components/Button.jsx'
 import HeroIntro, { HeroItem } from '../components/HeroIntro.jsx'
 import QuoteForm from '../components/QuoteForm.jsx'
 import Reveal, { Stagger, StaggerItem } from '../components/Reveal.jsx'
+import { SERVICES } from '../data/content.js'
 import useHeroGsap from '../hooks/useHeroGsap.js'
 
 export default function Services() {
   const heroRef = useRef(null)
   useHeroGsap(heroRef)
-  const [services, setServices] = useState([])
-
-  useEffect(() => {
-    api.services().then((d) => setServices(d.items || [])).catch(() => {})
-  }, [])
+  const services = SERVICES
 
   return (
     <>

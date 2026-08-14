@@ -1,15 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { api } from '../api.js'
 import Button from '../components/Button.jsx'
 import Faq from '../components/Faq.jsx'
 import HeroIntro, { HeroItem } from '../components/HeroIntro.jsx'
 import Reveal from '../components/Reveal.jsx'
+import { FAQS } from '../data/content.js'
 import useHeroGsap from '../hooks/useHeroGsap.js'
 
 export default function Contact() {
   const heroRef = useRef(null)
   useHeroGsap(heroRef)
-  const [faqs, setFaqs] = useState([])
+  const faqs = FAQS
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -20,10 +21,6 @@ export default function Contact() {
   })
   const [status, setStatus] = useState({ type: '', text: '' })
   const [busy, setBusy] = useState(false)
-
-  useEffect(() => {
-    api.faqs().then((d) => setFaqs(d.items || [])).catch(() => {})
-  }, [])
 
   function set(key, value) {
     setForm((f) => ({ ...f, [key]: value }))

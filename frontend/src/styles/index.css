@@ -1374,6 +1374,12 @@ body.intro-locked .float-actions { opacity: 0; pointer-events: none; }
   .stat-card, .float-chip { position: static; margin-top: 14px; width: auto; max-width: none; }
   .plan.featured { transform: none; }
   .cta-band { flex-direction: column; align-items: flex-start; padding: 36px 24px; }
+  .plan .btn,
+  .cta-band .btn {
+    align-self: flex-start;
+    width: auto;
+    max-width: 100%;
+  }
   .mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 180px 180px; }
   .mosaic > *:first-child { grid-row: auto; }
   .process-photo { height: 320px; }
@@ -1396,10 +1402,47 @@ body.intro-locked .float-actions { opacity: 0; pointer-events: none; }
   .hero h1, .page-hero h1 { font-size: 32px; letter-spacing: -0.03em; }
   .section-title { font-size: 28px; }
   .lead { font-size: 15px; }
-  .hero-cta { flex-direction: column; align-items: stretch; width: 100%; max-width: 100%; }
+  .btn {
+    padding: 5px 5px 5px 14px;
+    gap: 8px;
+    font-size: 13px;
+    width: auto;
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+  .btn-ghost,
+  .btn-outline-dark { padding-right: 5px; }
+  .btn-arrow { width: 28px; height: 28px; }
+  .btn-arrow svg { width: 13px; height: 13px; }
+  .hero-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+    max-width: 100%;
+    gap: 10px;
+    margin-top: 24px;
+  }
   .hero-cta .btn,
-  .hero-cta > div { width: 100%; max-width: 100%; }
-  .hero-cta .btn { justify-content: space-between; box-sizing: border-box; }
+  .hero-cta > div {
+    width: auto;
+    max-width: 100%;
+  }
+  .hero-cta .btn { justify-content: flex-start; box-sizing: border-box; }
+  .plan .btn,
+  .cta-band .btn,
+  .form-card .btn,
+  .quote-box .btn,
+  .service-card-copy .btn {
+    align-self: flex-start;
+    width: auto;
+    max-width: 100%;
+  }
+  .news { flex-wrap: wrap; align-items: center; }
+  .news .btn {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 5px 14px;
+  }
   .trust-row { align-items: flex-start; flex-wrap: wrap; }
   .mosaic { grid-template-columns: 1fr; grid-auto-rows: 200px; }
   .cta-band { padding: 28px 20px; border-radius: 24px; }

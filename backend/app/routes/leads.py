@@ -1,9 +1,8 @@
-from datetime import datetime, timezone
-
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, EmailStr, Field
+from pymysql.err import IntegrityError
 
-from ..db import db
+from ..db import get_pool
 
 router = APIRouter(prefix="/api")
 
@@ -30,37 +29,72 @@ class NewsletterIn(BaseModel):
     email: EmailStr
 
 
+async def _pool():
+    try:
+        return await get_pool()
+    except RuntimeError:
+        raise HTTPException(status_code=503, detail="MySQL is not connected") from None
+
+
 @router.post("/contact")
 async def create_contact(payload: ContactIn):
-    doc = payload.model_dump()
-    doc["createdAt"] = datetime.now(timezone.utc)
-    doc["status"] = "new"
-    result = await db.contacts.insert_one(doc)
-    return {"ok": True, "id": str(result.inserted_id)}
+    pool = await _pool()
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute(
+                """
+                INSERT INTO contacts
+                  (first_name, last_name, email, phone, subject, message, status)
+                VALUES (%s, %s, %s, %s, %s, %s, 'new')
+                """,
+                (
+                    payload.firstName.strip(),
+                    payload.lastName.strip(),
+                    payload.email.lower(),
+                    payload.phone.strip(),
+                    payload.subject.strip(),
+                    payload.message.strip(),
+                ),
+            )
+            return {"ok": True, "id": cur.lastrowid}
 
 
 @router.post("/quote")
 async def create_quote(payload: QuoteIn):
-    allowed = {"motor", "health", "life"}
-    if payload.insuranceType.lower() not in allowed:
+    kind = payload.insuranceType.lower()
+    if kind not in {"motor", "health", "life"}:
         raise HTTPException(status_code=422, detail="Choose motor, health or life")
-    doc = payload.model_dump()
-    doc["insuranceType"] = payload.insuranceType.lower()
-    doc["createdAt"] = datetime.now(timezone.utc)
-    doc["status"] = "new"
-    result = await db.quotes.insert_one(doc)
-    return {"ok": True, "id": str(result.inserted_id)}
+    pool = await _pool()
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute(
+                """
+                INSERT INTO quotes
+                  (name, email, phone, city, insurance_type, notes, status)
+                VALUES (%s, %s, %s, %s, %s, %s, 'new')
+                """,
+                (
+                    payload.name.strip(),
+                    payload.email.lower(),
+                    payload.phone.strip(),
+                    payload.city.strip(),
+                    kind,
+                    payload.notes.strip(),
+                ),
+            )
+            return {"ok": True, "id": cur.lastrowid}
 
 
 @router.post("/newsletter")
 async def subscribe(payload: NewsletterIn):
-    existing = await db.subscribers.find_one({"email": payload.email.lower()})
-    if existing:
-        return {"ok": True, "already": True}
-    await db.subscribers.insert_one(
-        {
-            "email": payload.email.lower(),
-            "createdAt": datetime.now(timezone.utc),
-        }
-    )
-    return {"ok": True, "already": False}
+    pool = await _pool()
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            try:
+                await cur.execute(
+                    "INSERT INTO subscribers (email) VALUES (%s)",
+                    (payload.email.lower(),),
+                )
+            except IntegrityError:
+                return {"ok": True, "already": True}
+            return {"ok": True, "already": False}

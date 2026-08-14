@@ -2,9 +2,9 @@
 set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-if ! pgrep -x mongod >/dev/null; then
-  echo "Starting MongoDB..."
-  brew services start mongodb-community 2>/dev/null || brew services start mongodb-community@7.0 2>/dev/null || true
+if ! pgrep -x mysqld >/dev/null && ! pgrep -x mariadbd >/dev/null; then
+  echo "Starting MySQL..."
+  brew services start mysql 2>/dev/null || brew services start mysql@8.0 2>/dev/null || brew services start mariadb 2>/dev/null || true
 fi
 
 cd "$ROOT/backend"

@@ -1,33 +1,20 @@
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { api } from '../api.js'
+import { useRef } from 'react'
 import Button from '../components/Button.jsx'
 import CountUp from '../components/CountUp.jsx'
 import HeroIntro, { HeroItem } from '../components/HeroIntro.jsx'
 import ParallaxImage from '../components/ParallaxImage.jsx'
 import Reveal, { Stagger, StaggerItem } from '../components/Reveal.jsx'
 import Testimonials from '../components/Testimonials.jsx'
+import { INSIGHTS, TEAM, TESTIMONIALS } from '../data/content.js'
 import useHeroGsap from '../hooks/useHeroGsap.js'
-
-const fallbackTeam = [
-  { name: 'Ajay Prasad', role: 'Founder & Principal Advisor', image: '/images/team-aarav.jpg' },
-  { name: 'Priya Sharma', role: 'Head of Health Cover', image: '/images/team-priya.jpg' },
-  { name: 'Rohan Kapoor', role: 'Motor Specialist', image: '/images/team-rohan.jpg' },
-  { name: 'Ananya Iyer', role: 'Life & Retirement Planner', image: '/images/team-ananya.jpg' },
-]
 
 export default function About() {
   const heroRef = useRef(null)
   useHeroGsap(heroRef)
-  const [team, setTeam] = useState(fallbackTeam)
-  const [testimonials, setTestimonials] = useState([])
-  const [insights, setInsights] = useState([])
-
-  useEffect(() => {
-    api.team().then((d) => d.items?.length && setTeam(d.items)).catch(() => {})
-    api.testimonials().then((d) => setTestimonials(d.items || [])).catch(() => {})
-    api.insights().then((d) => setInsights(d.items || [])).catch(() => {})
-  }, [])
+  const team = TEAM
+  const testimonials = TESTIMONIALS
+  const insights = INSIGHTS
 
   return (
     <>

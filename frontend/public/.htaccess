@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteRule ^api/contact/?$ api/contact.php [L]
+  RewriteRule ^api/quote/?$ api/quote.php [L]
+  RewriteRule ^api/newsletter/?$ api/newsletter.php [L]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>

@@ -1,44 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { api } from '../api.js'
 import Button from '../components/Button.jsx'
 import Faq from '../components/Faq.jsx'
 import HeroIntro, { HeroItem, HeroVisual } from '../components/HeroIntro.jsx'
 import ParallaxImage from '../components/ParallaxImage.jsx'
 import QuoteForm from '../components/QuoteForm.jsx'
 import Reveal, { Stagger, StaggerItem } from '../components/Reveal.jsx'
+import { getService } from '../data/content.js'
 import useHeroGsap from '../hooks/useHeroGsap.js'
 
 export default function ServiceDetail() {
   const { slug } = useParams()
   const heroRef = useRef(null)
-  const [service, setService] = useState(null)
-  const [error, setError] = useState('')
+  const service = getService(slug)
   useHeroGsap(heroRef, Boolean(service))
-
-  useEffect(() => {
-    setService(null)
-    setError('')
-    api.service(slug).then(setService).catch((e) => setError(e.message))
-  }, [slug])
-
-  if (error) {
-    return (
-      <section className="page-hero">
-        <div className="container">
-          <h1>We could not load that cover.</h1>
-          <p className="lead">{error}</p>
-          <Button to="/services" variant="cream">Back to services</Button>
-        </div>
-      </section>
-    )
-  }
 
   if (!service) {
     return (
       <section className="page-hero">
         <div className="container">
-          <p className="lead">Loading cover…</p>
+          <h1>We could not find that cover.</h1>
+          <p className="lead">Choose motor, health or life from the services list.</p>
+          <Button to="/services" variant="cream">Back to services</Button>
         </div>
       </section>
     )
