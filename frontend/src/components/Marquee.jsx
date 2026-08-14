@@ -23,21 +23,26 @@ export default function Marquee({ label = 'Cover we place every week' }) {
   useEffect(() => {
     const el = track.current
     if (!el) return
-    const tween = gsap.to(el, {
-      xPercent: -50,
-      duration: 28,
-      ease: 'none',
-      repeat: -1,
-    })
-    const pause = () => tween.pause()
-    const play = () => tween.play()
-    el.addEventListener('mouseenter', pause)
-    el.addEventListener('mouseleave', play)
-    return () => {
-      el.removeEventListener('mouseenter', pause)
-      el.removeEventListener('mouseleave', play)
-      tween.kill()
-    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      const tween = gsap.to(el, {
+        xPercent: -50,
+        duration: 28,
+        ease: 'none',
+        repeat: -1,
+      })
+      const pause = () => tween.pause()
+      const play = () => tween.play()
+      el.addEventListener('mouseenter', pause)
+      el.addEventListener('mouseleave', play)
+      return () => {
+        el.removeEventListener('mouseenter', pause)
+        el.removeEventListener('mouseleave', play)
+      }
+    }, el)
+
+    return () => ctx.revert()
   }, [])
 
   return (

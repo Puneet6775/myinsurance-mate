@@ -6,7 +6,7 @@ import CountUp from '../components/CountUp.jsx'
 import { PlayIcon } from '../components/Icons.jsx'
 import Marquee from '../components/Marquee.jsx'
 import ParallaxImage from '../components/ParallaxImage.jsx'
-import HeroIntro, { HeroItem, photoAnim } from '../components/HeroIntro.jsx'
+import HeroIntro, { HeroItem, HeroVisual } from '../components/HeroIntro.jsx'
 import Reveal, { Stagger, StaggerItem } from '../components/Reveal.jsx'
 import Testimonials from '../components/Testimonials.jsx'
 import useHeroGsap from '../hooks/useHeroGsap.js'
@@ -110,7 +110,7 @@ export default function Home() {
             </HeroItem>
           </HeroIntro>
 
-          <motion.div className="hero-visual" {...photoAnim}>
+          <HeroVisual className="hero-visual">
             <div className="hero-photo">
               <ParallaxImage src="/images/hero-family.jpg" alt="A family walking together" />
             </div>
@@ -133,7 +133,7 @@ export default function Home() {
               </div>
               <p>Clients who say their policy finally makes sense.</p>
             </div>
-          </motion.div>
+          </HeroVisual>
         </div>
       </section>
 

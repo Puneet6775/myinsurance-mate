@@ -1,10 +1,9 @@
-import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../api.js'
 import Button from '../components/Button.jsx'
 import Faq from '../components/Faq.jsx'
-import HeroIntro, { HeroItem, photoAnim } from '../components/HeroIntro.jsx'
+import HeroIntro, { HeroItem, HeroVisual } from '../components/HeroIntro.jsx'
 import ParallaxImage from '../components/ParallaxImage.jsx'
 import QuoteForm from '../components/QuoteForm.jsx'
 import Reveal, { Stagger, StaggerItem } from '../components/Reveal.jsx'
@@ -61,9 +60,9 @@ export default function ServiceDetail() {
               </div>
             </HeroItem>
           </HeroIntro>
-          <motion.div className="hero-photo" {...photoAnim}>
+          <HeroVisual className="hero-photo">
             <ParallaxImage src={service.heroImage} alt="" />
-          </motion.div>
+          </HeroVisual>
         </div>
       </section>
 

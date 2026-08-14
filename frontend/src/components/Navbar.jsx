@@ -82,8 +82,12 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
+    document.documentElement.classList.toggle('nav-locked', menuOpen)
     document.body.classList.toggle('nav-locked', menuOpen)
-    return () => document.body.classList.remove('nav-locked')
+    return () => {
+      document.documentElement.classList.remove('nav-locked')
+      document.body.classList.remove('nav-locked')
+    }
   }, [menuOpen])
 
   useEffect(() => {

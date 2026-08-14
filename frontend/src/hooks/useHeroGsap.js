@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
+import { useIntro } from '../lib/intro.jsx'
 import { gsap } from '../lib/gsap.js'
 
 export default function useHeroGsap(rootRef, ready = true) {
+  const intro = useIntro()
+  const go = ready && intro.ready
+
   useEffect(() => {
     const root = rootRef.current
-    if (!root || !ready) return
+    if (!root || !go) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
@@ -34,5 +38,5 @@ export default function useHeroGsap(rootRef, ready = true) {
     }, root)
 
     return () => ctx.revert()
-  }, [rootRef, ready])
+  }, [rootRef, go])
 }

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useIntro } from '../lib/intro.jsx'
 
 const ease = [0.22, 1, 0.36, 1]
 
@@ -13,8 +14,9 @@ const item = {
 }
 
 export default function HeroIntro({ children, className = '' }) {
+  const { ready } = useIntro()
   return (
-    <motion.div className={className} variants={parent} initial="hidden" animate="show">
+    <motion.div className={className} variants={parent} initial="hidden" animate={ready ? 'show' : 'hidden'}>
       {children}
     </motion.div>
   )
@@ -32,4 +34,18 @@ export const photoAnim = {
   initial: { opacity: 0, scale: 1.06 },
   animate: { opacity: 1, scale: 1 },
   transition: { duration: 1, ease },
+}
+
+export function HeroVisual({ children, className = '' }) {
+  const { ready } = useIntro()
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, scale: 1.06 }}
+      animate={ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.06 }}
+      transition={{ duration: 1, ease }}
+    >
+      {children}
+    </motion.div>
+  )
 }
