@@ -248,6 +248,7 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   color: var(--blue-deep);
 }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
+.nav-login { display: inline-flex; flex-shrink: 0; }
 .menu-toggle {
   display: none;
   width: 44px;
@@ -1358,6 +1359,14 @@ body.intro-locked .float-actions { opacity: 0; pointer-events: none; }
   .form-wrap, .two-col { grid-template-columns: 1fr !important; }
   .nav-links,
   .nav-contact { display: none; }
+  .nav-login .btn {
+    padding: 6px 6px 6px 14px;
+    font-size: 13px;
+  }
+  .nav-login .btn-arrow {
+    width: 32px;
+    height: 32px;
+  }
   .menu-toggle {
     display: flex !important;
     visibility: visible !important;

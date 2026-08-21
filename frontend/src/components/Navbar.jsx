@@ -16,6 +16,8 @@ const serviceLinks = [
   { to: '/services/life', label: 'Life insurance' },
 ]
 
+const PORTAL_LOGIN = 'https://crm.myinsurancemates.com/portal/login'
+
 const overlayNav = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
@@ -30,6 +32,7 @@ const overlayNav = [
     ],
   },
   { to: '/contact', label: 'Contact' },
+  { href: PORTAL_LOGIN, label: 'Log In' },
 ]
 
 const lineEase = { duration: 0.4, ease: 'easeInOut' }
@@ -137,7 +140,23 @@ export default function Navbar() {
         >
           <nav className="mobile-overlay-nav" aria-label="Mobile">
             {overlayNav.map((item, i) =>
-              item.children ? (
+              item.href ? (
+                <motion.div
+                  key={item.href}
+                  custom={i}
+                  variants={overlayItem}
+                  initial="closed"
+                  animate="open"
+                >
+                  <a
+                    href={item.href}
+                    className="mobile-overlay-link"
+                    onClick={closeAll}
+                  >
+                    {item.label}
+                  </a>
+                </motion.div>
+              ) : item.children ? (
                 <motion.div
                   key={item.key}
                   className="mobile-overlay-group"
@@ -244,6 +263,11 @@ export default function Navbar() {
           </nav>
 
           <div className="nav-actions">
+            <span className="nav-login">
+              <Button href={PORTAL_LOGIN} variant="ghost">
+                Log In
+              </Button>
+            </span>
             <span className="nav-contact">
               <Button to="/contact" variant="cream">
                 Contact Us

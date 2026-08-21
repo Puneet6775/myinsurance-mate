@@ -1,7 +1,17 @@
 import { Link } from 'react-router-dom'
 import { ArrowIcon } from './Icons.jsx'
 
-export default function Button({ to, href, children, variant = 'cream', type = 'button', onClick, className = '' }) {
+export default function Button({
+  to,
+  href,
+  children,
+  variant = 'cream',
+  type = 'button',
+  onClick,
+  className = '',
+  target,
+  rel,
+}) {
   const cls = `btn btn-${variant} ${className}`
   const inner = (
     <>
@@ -13,7 +23,7 @@ export default function Button({ to, href, children, variant = 'cream', type = '
     </>
   )
   if (to) return <Link className={cls} to={to}>{inner}</Link>
-  if (href) return <a className={cls} href={href}>{inner}</a>
+  if (href) return <a className={cls} href={href} target={target} rel={rel}>{inner}</a>
   return (
     <button className={cls} type={type} onClick={onClick}>
       {inner}
